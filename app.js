@@ -1,4 +1,3 @@
-
 var express = require('express');
 var redis = require('redis');
 var http = require('http');
@@ -54,7 +53,15 @@ app.use(session({
   secret: settings.cookie_secret,
   store: sessionStore,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  name: 'session_id', // Custom session cookie name
+  cookie: {
+    domain: 'yourdomain.com', // Set your domain
+    expires: new Date(Date.now() + 3600000), // Set expiration to 1 hour
+    httpOnly: true, // Ensure the cookie is sent only over HTTP(S)
+    path: '/', // Set the path
+    secure: app.get('env') === 'production' // Ensure the cookie is sent over HTTPS in production
+  }
 }));
 
 //使用静态资源服务以及设置缓存(三天)
