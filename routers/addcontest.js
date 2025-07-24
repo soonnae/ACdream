@@ -1,4 +1,3 @@
-
 var router = require('express').Router();
 var Q = require('q');
 
@@ -102,7 +101,10 @@ router.route('/')
   })
   .then(function(){
     resp.clone = clone;
-    res.render('addcontest', resp);
+    res.render('addcontest', {
+      ...resp,
+      family: Comm.escapeHTML(resp.family) // Ensure family is properly escaped
+    });
   })
   .fail(function(err){
     FailRender(err, res, ret);
